@@ -1,4 +1,4 @@
-# Smart Password Manager Web <sup>v2.0.0</sup>
+# Smart Password Manager Web <sup>v2.0.1</sup>
 
 ---
 
@@ -32,7 +32,7 @@ Your passwords don't need to be stored because they were never created—they al
 
 ## 🔄 Important: smartpasslib v3.0.0 Breaking Change
 
-> **⚠️ This release (v2.0.0) uses [smartpasslib](https://github.com/smartlegionlab/smartpasslib) v3.0.0, which is NOT backward compatible with v1.x.x**
+> **⚠️ This release (v2.0.1) uses [smartpasslib](https://github.com/smartlegionlab/smartpasslib) v3.0.0, which is NOT backward compatible with v1.x.x**
 
 ### Why the change?
 
@@ -46,8 +46,8 @@ Your passwords don't need to be stored because they were never created—they al
 ### What changed:
 
 - The core password generation algorithm has been completely redesigned
-- Smart passwords created with v1.3.7 or earlier **cannot be regenerated** using v2.0.0
-- Existing password entries in the database will produce **different passwords** if regenerated with v2.0.0
+- Smart passwords created with v1.3.7 or earlier **cannot be regenerated** using v2.0.1
+- Existing password entries in the database will produce **different passwords** if regenerated with v2.0.1
 
 ### What you need to do:
 
@@ -169,7 +169,7 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 
 ## Migration Section
 
-### Migrating from v1.x.x to v2.0.0
+### Migrating from v1.x.x to v2.0.1
 
 **⚠️ Before upgrading — follow these steps carefully**
 
@@ -184,7 +184,7 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 pg_dump -U postgres smart_password_manager_db > backup_v1.sql
 ```
 
-**Step 3: Upgrade to v2.0.0**
+**Step 3: Upgrade to v2.0.1**
 ```bash
 # Update smartpasslib
 pip install smartpasslib==3.0.0
@@ -201,20 +201,27 @@ python manage.py migrate
 - Option B: Keep entries but manually verify each password (not recommended)
 
 **Step 5: Update passwords in all your services**
-- After regenerating passwords with v2.0.0, update them in each website/service
+- After regenerating passwords with v2.0.1, update them in each website/service
 - Test login before removing old access
 
-**Important**: v1.x.x and v2.0.0 cannot share the same password entries. Keep them completely separate or manually migrate each password.
+**Important**: v1.x.x and v2.0.1 cannot share the same password entries. Keep them completely separate or manually migrate each password.
 
 ---
 
-## What's New in v2.0.0
+## What's New in v2.0.1
 
 ### Breaking Change: smartpasslib v3.0.0
 
 - **New cryptographic algorithm** — stronger and faster password generation
 - **NOT backward compatible** with v1.x.x — all smart passwords must be regenerated
 - **See migration section above** for detailed upgrade instructions
+
+### Security Enhancements
+
+- **Minimum 12 characters** enforced for secret phrases
+- **Minimum password length** set to 12 characters (default 16)
+- **Client-side validation** with visual feedback
+- **Strong secret examples** in the UI
 
 ### Previous Features
 
@@ -239,6 +246,14 @@ python manage.py migrate
 - **Frontend**: HTML5, CSS3, JavaScript
 - **Task Queue**: Celery with Redis (optional)
 
+### Security Requirements
+
+| Field | Minimum | Default | Maximum |
+|-------|---------|---------|---------|
+| Secret phrase | 12 chars | - | 255 chars |
+| Password length | 12 chars | 16 chars | 100 chars |
+| Description | 1 char | - | 255 chars |
+
 ### Database Configuration
 Default development credentials:
 - **User**: postgres
@@ -253,8 +268,8 @@ Default development credentials:
 
 | Version | smartpasslib | Status | Migration Required |
 |---------|--------------|--------|---------------------|
-| v1.3.7 and below | v2.x.x | ❌ Deprecated/Unsupported | Must migrate to v2.0.0 |
-| v2.0.0+ | v3.0.0 | ✅ Current | N/A |
+| v1.3.7 and below | v2.x.x | ❌ Deprecated/Unsupported | Must migrate to v2.0.1 |
+| v2.0.1+ | v3.0.0 | ✅ Current | N/A |
 
 ---
 

@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class SmartPassword(models.Model):
@@ -11,7 +12,10 @@ class SmartPassword(models.Model):
         null=True
     )
     description = models.CharField(max_length=255)
-    length = models.PositiveSmallIntegerField(default=12)
+    length = models.PositiveSmallIntegerField(
+        default=16,
+        validators=[MinValueValidator(12)]
+    )
     public_key = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
