@@ -1,4 +1,4 @@
-# Smart Password Manager Web <sup>v1.3.7</sup>
+# Smart Password Manager Web <sup>v2.0.0</sup>
 
 ---
 
@@ -27,6 +27,38 @@ Your passwords don't need to be stored because they were never created—they al
 **Summary:** Software provided "AS IS" without warranty. You assume all risks.
 
 **Full legal disclaimer:** See [DISCLAIMER.md](https://github.com/smartlegionlab/smart-password-manager/blob/master/DISCLAIMER.md)
+
+---
+
+## 🔄 Important: smartpasslib v3.0.0 Breaking Change
+
+> **⚠️ This release (v2.0.0) uses [smartpasslib](https://github.com/smartlegionlab/smartpasslib) v3.0.0, which is NOT backward compatible with v1.x.x**
+
+### Why the change?
+
+**Smartpasslib v3.0.0 introduces fundamental improvements:**
+- **Stronger cryptographic algorithm** — enhanced deterministic generation with better entropy distribution
+- **Improved performance** — faster password generation, especially for longer passwords
+- **Better cross-platform consistency** — identical results guaranteed across all platforms
+- **Extended character set support** — wider range of special characters for stronger passwords
+- **Future-proof architecture** — easier updates and security patches
+
+### What changed:
+
+- The core password generation algorithm has been completely redesigned
+- Smart passwords created with v1.3.7 or earlier **cannot be regenerated** using v2.0.0
+- Existing password entries in the database will produce **different passwords** if regenerated with v2.0.0
+
+### What you need to do:
+
+1. **Before upgrading** — retrieve and save all your existing passwords from the old version
+2. **After upgrading** — recreate each password using the same secret phrases + lengths
+3. **Update** your passwords on all websites/services
+4. **Existing database entries remain** but will generate different passwords
+
+**No automatic migration** — you must manually regenerate every password.
+
+📖 **Full migration instructions** → see [Migration Section](#migration-section)
 
 ---
 
@@ -69,6 +101,9 @@ pip install -r requirements.txt
 
 # Install PostgreSQL adapter
 pip install psycopg2-binary
+
+# Install smartpasslib v3.0.0
+pip install smartpasslib==3.0.0
 ```
 
 #### 3. Database Configuration
@@ -130,6 +165,67 @@ python manage.py runserver
 Access the application at: [http://localhost:8000](http://localhost:8000)
 Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 
+---
+
+## Migration Section
+
+### Migrating from v1.x.x to v2.0.0
+
+**⚠️ Before upgrading — follow these steps carefully**
+
+**Step 1: Document your existing passwords**
+- Open your current Smart Password Manager Web (v1.3.7 or earlier)
+- For each password entry, retrieve the actual password using your secret phrase
+- Save passwords in a secure temporary location (e.g., encrypted note)
+
+**Step 2: Backup your database (optional)**
+```bash
+# Dump your database before upgrading
+pg_dump -U postgres smart_password_manager_db > backup_v1.sql
+```
+
+**Step 3: Upgrade to v2.0.0**
+```bash
+# Update smartpasslib
+pip install smartpasslib==3.0.0
+
+# Pull latest code
+git pull origin master
+
+# Apply migrations (if any)
+python manage.py migrate
+```
+
+**Step 4: Migrate your data**
+- Option A: Delete old password entries and add new ones manually
+- Option B: Keep entries but manually verify each password (not recommended)
+
+**Step 5: Update passwords in all your services**
+- After regenerating passwords with v2.0.0, update them in each website/service
+- Test login before removing old access
+
+**Important**: v1.x.x and v2.0.0 cannot share the same password entries. Keep them completely separate or manually migrate each password.
+
+---
+
+## What's New in v2.0.0
+
+### Breaking Change: smartpasslib v3.0.0
+
+- **New cryptographic algorithm** — stronger and faster password generation
+- **NOT backward compatible** with v1.x.x — all smart passwords must be regenerated
+- **See migration section above** for detailed upgrade instructions
+
+### Previous Features
+
+- **Web-based interface** for smart password management
+- **PostgreSQL backend** for reliable data storage
+- **Django admin integration** for easy management
+- **REST API support** for programmatic access
+- **User authentication** and session management
+
+---
+
 ## Interface Preview
 
 ![Web Interface](https://github.com/smartlegionlab/smart-password-manager/raw/master/data/images/smart_password_manager.png)
@@ -151,6 +247,17 @@ Default development credentials:
 - **Host**: localhost
 - **Port**: 5432
 
+---
+
+## Version History
+
+| Version | smartpasslib | Status | Migration Required |
+|---------|--------------|--------|---------------------|
+| v1.3.7 and below | v2.x.x | ❌ Deprecated/Unsupported | Must migrate to v2.0.0 |
+| v2.0.0+ | v3.0.0 | ✅ Current | N/A |
+
+---
+
 ## Smart Password Ecosystem
 
 This web application is part of a comprehensive suite:
@@ -165,10 +272,13 @@ This web application is part of a comprehensive suite:
 ### Core Technology
 - [**SmartPassLib**](https://github.com/smartlegionlab/smartpasslib) - Core password generation library
 
+---
 
 ## License
 
 BSD 3-Clause License
 
-Copyright (©) 2025, Alexander Suvorov
+Copyright (©) 2026, Alexander Suvorov
+
+---
 
