@@ -138,6 +138,12 @@ DB_PORT=5432
 # Optional: Redis/Celery Settings
 REDIS_URL=redis://localhost:6379/1
 CELERY_BROKER_URL=redis://localhost:6379/0
+
+# Email settings
+EMAIL_ON=True
+EMAIL_HOST = 'smtp.server.com'
+EMAIL_HOST_USER = 'email@example.com'
+EMAIL_HOST_PASSWORD = 'password'
 ```
 
 Generate secret key:
