@@ -5,7 +5,6 @@ from django.urls import path
 from users.views.auth.login import login_view
 from users.views.auth.logout import logout_view
 from users.views.auth.password_change import password_change_view
-from users.views.auth.password_generate import password_generate_view
 from users.views.auth.password_reset import password_reset_view
 from users.views.auth.register import register_view
 from users.views.user.user_delete import user_delete_view
@@ -16,7 +15,6 @@ from users.views.auth.verify_view import resend_verification_view, verify_email_
 
 app_name = 'users'
 
-# User
 urlpatterns = [
     path('', user_detail_view, name='user_detail'),
     path('login/', login_view, name='login'),
@@ -30,7 +28,6 @@ urlpatterns = [
     path('password/reset/resend/', resend_password_reset_view, name='resend_password_reset'),
     path('password/reset/<token>/', password_reset_view, name='password_reset'),
     path('password/change/', password_change_view, name='password_change'),
-    path('password/generate/', password_generate_view, name='password_generate'),
 ]
 
 
