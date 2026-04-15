@@ -7,6 +7,7 @@ from smart_passwords.views.smart_password_update import smart_password_update_vi
 from smart_passwords.views.smart_password_delete import smart_password_delete_view
 from smart_passwords.views.smart_password_generate import smart_password_generate_view
 from smart_passwords.views.smart_password_list import smart_password_list_view
+from smart_passwords.views.api_create import api_create_smart_password
 
 app_name = 'smart_passwords'
 
@@ -17,6 +18,9 @@ urlpatterns = [
     path('<int:pk>/update/', smart_password_update_view, name='smart_password_update'),
     path('<int:pk>/delete/', smart_password_delete_view, name='smart_password_delete'),
     path('<int:pk>/generate/', smart_password_generate_view, name='smart_password_generate'),
+
+    # API
+    path('api/create/', api_create_smart_password, name='api_create'),
 ]
 
 
