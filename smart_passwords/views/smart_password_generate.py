@@ -9,15 +9,15 @@ from smart_passwords.services import SmartPasswordService
 
 
 @login_required
-def smart_password_generate_view(request, smart_pass_id):
+def smart_password_generate_view(request, pk):
     try:
-        smart_password = SmartPassword.objects.get(id=smart_pass_id, user=request.user)
+        smart_password = SmartPassword.objects.get(id=pk, user=request.user)
 
         if request.method == 'POST':
             form = SecretPhraseForm(request.POST)
             if form.is_valid():
                 secret_phrase = form.cleaned_data['secret_phrase']
-                password = SmartPasswordService.generate_password(smart_pass_id, request.user, secret_phrase)
+                password = SmartPasswordService.generate_password(pk, request.user, secret_phrase)
 
                 request.session['password'] = password
                 messages.success(request, 'Smart Password generated successfully!')

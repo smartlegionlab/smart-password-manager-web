@@ -7,9 +7,9 @@ from smart_passwords.services import SmartPasswordService
 
 
 @login_required
-def smart_password_delete_view(request, smart_pass_id):
+def smart_password_delete_view(request, pk):
     try:
-        SmartPasswordService.delete_smart_password(smart_pass_id, request.user)
+        SmartPasswordService.delete_smart_password(pk, request.user)
         messages.success(request, 'Smart Password deleted successfully!')
     except ValidationError as e:
         messages.error(request, e.messages[0])
