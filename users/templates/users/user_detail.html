@@ -2,89 +2,149 @@
 
 {% block title %}{{ request.user.full_name }}{% endblock %}
 
+{% block css %}
+<style>
+    .login-entry {
+        transition: all 0.2s ease;
+    }
+    .login-entry:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        transform: translateX(5px);
+    }
+    .location-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 20px;
+    }
+    .no-logs {
+        text-align: center;
+        padding: 20px;
+        color: #888;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
-    <h1 class="display-6 text-center">
-        {{ request.user.full_name }}
-        <sup style="font-size: 16px">
-            {% if request.user.is_online %}
-                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Online"
-                   class="bi bi-circle-fill text-success"></i>
-            {% else %}
-                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Offline"
-                   class="bi bi-circle-fill text-danger"></i>
-            {% endif %}
-        </sup>
-    </h1>
+<h1 class="display-6 text-center">
+    {{ request.user.full_name }}
+    <sup style="font-size: 16px">
+        {% if request.user.is_online %}
+            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Online"
+               class="bi bi-circle-fill text-success"></i>
+        {% else %}
+            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Offline"
+               class="bi bi-circle-fill text-danger"></i>
+        {% endif %}
+    </sup>
+</h1>
 
-    <hr>
-    <p class="text-center text-primary">{{ request.user.bio }}</p>
+<hr>
+<p class="text-center text-primary">{{ request.user.bio|default:"No bio yet" }}</p>
 
-    {% if not request.user.is_online %}
-        <p class="text-center text-danger">Last activity date: <span
-            class="text-secondary">{{ request.user.last_activity|timesince }}</span> ago</p>
-    {% endif %}
+{% if not request.user.is_online %}
+    <p class="text-center text-danger">Last activity date: <span
+        class="text-secondary">{{ request.user.last_activity|timesince }}</span> ago</p>
+{% endif %}
 
-    <hr>
+<hr>
 
-    <div class="border p-3 mb-3 rounded" style="box-shadow: 0 0 5px #1b9dec">
-
-        <ul class="list-group list-group-flush">
-
-            <li class="list-group-item">
-                <strong>Name:</strong>
-                <span class="text-primary">
-                    {{ request.user.first_name }}
-                </span>
-            </li>
-
-            <li class="list-group-item">
-                <strong>Last name:</strong>
-                <span class="text-primary">
-                    {{ request.user.last_name }}
-                </span>
-            </li>
-
-            <li class="list-group-item">
-                <strong>Email:</strong>
-                <span class="text-primary">
-                    {{ request.user.email|default:"" }}
-                </span>
-            </li>
-
-            <li class="list-group-item">
-                <strong>Two-factor authentication:</strong>
-                <span class="text-primary">
+<div class="border p-3 mb-4 rounded" style="box-shadow: 0 0 5px #1b9dec">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <strong>Name:</strong>
+            <span class="text-primary">{{ request.user.first_name }}</span>
+        </li>
+        <li class="list-group-item">
+            <strong>Last name:</strong>
+            <span class="text-primary">{{ request.user.last_name }}</span>
+        </li>
+        <li class="list-group-item">
+            <strong>Email:</strong>
+            <span class="text-primary">{{ request.user.email|default:"" }}</span>
+        </li>
+        <li class="list-group-item">
+            <strong>Two-factor authentication:</strong>
+            <span class="text-primary">
                 {% if request.user.is_2fa_enabled %}
-                    <i class="bi bi-check-circle text-success"></i>
+                    <i class="bi bi-check-circle text-success"></i> Enabled
                 {% else %}
-                    <i class="bi bi-x-circle text-danger"></i>
+                    <i class="bi bi-x-circle text-danger"></i> Disabled
                 {% endif %}
             </span>
-            </li>
+        </li>
+        <li class="list-group-item">
+            <strong>Account updated:</strong>
+            <span class="text-primary">{{ request.user.updated_at|timesince }} ago</span>
+        </li>
+        <li class="list-group-item">
+            <strong>Account created:</strong>
+            <span class="text-primary">{{ request.user.created_at|date:"d.m.Y H:i:s" }}</span>
+        </li>
+        <li class="list-group-item">
+            <strong>Smart Passwords:</strong>
+            <span class="text-primary">
+                <a href="{% url 'smart_passwords:smart_password_list' %}">{{ request.user.smart_passwords.count }}</a>
+            </span>
+        </li>
+    </ul>
+</div>
 
-            <li class="list-group-item">
-                <strong>Account updated:</strong>
-                <span class="text-primary">
-                    {{ request.user.updated_at|timesince }} ago
-                </span>
-            </li>
-
-            <li class="list-group-item">
-                <strong>Account created:</strong>
-                <span class="text-primary">
-                        {{ request.user.created_at|date:"d.m.Y H:i:s" }}
-                </span>
-            </li>
-
-            <li class="list-group-item">
-                <strong>Smart Passwords:</strong>
-                <span class="text-primary">
-                        <a href="{% url "smart_passwords:smart_password_list" %}">{{ request.user.smart_passwords.count }}</a>
-                </span>
-            </li>
-
-        </ul>
-    </div>
+<div class="border p-3 rounded" style="box-shadow: 0 0 5px #1b9dec">
+    <h4 class="mb-3">
+        <i class="bi bi-clock-history"></i> Recent Logins
+        <span class="badge bg-secondary ms-2">{{ auth_logs|length }}</span>
+    </h4>
     <hr>
+
+    {% if auth_logs %}
+        <div class="list-group list-group-flush">
+            {% for log in auth_logs %}
+                <div class="list-group-item bg-transparent login-entry">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong>
+                                <i class="bi bi-calendar3"></i> {{ log.timestamp|date:"d.m.Y H:i:s" }}
+                            </strong>
+                        </div>
+                        <div>
+                            <span class="location-badge bg-primary">
+                                <i class="bi bi-geo-alt"></i> {{ log.country|default:"Unknown" }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="bi bi-hdd-network"></i> IP: {{ log.ip }}
+                        </small>
+                        {% if log.city %}
+                            <small class="text-muted ms-2">
+                                <i class="bi bi-building"></i> {{ log.city }}
+                            </small>
+                        {% endif %}
+                    </div>
+                    <div class="mt-1">
+                        {% if log.is_mobile %}
+                            <span class="badge bg-info"><i class="bi bi-phone"></i> Mobile</span>
+                        {% endif %}
+                        {% if log.is_proxy %}
+                            <span class="badge bg-warning"><i class="bi bi-shield-shaded"></i> Proxy/VPN</span>
+                        {% endif %}
+                        <small class="text-muted ms-2">
+                            <i class="bi bi-browser-chrome"></i> {{ log.user_agent|truncatechars:50 }}
+                        </small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-logs">
+            <i class="bi bi-inbox" style="font-size: 48px;"></i>
+            <p class="mt-2">No login records yet</p>
+        </div>
+    {% endif %}
+</div>
+
+<hr>
+
 {% endblock %}
