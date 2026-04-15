@@ -1,5 +1,5 @@
 /**
- * SmartPasswordLib v3.0.0 - Client-side smart password generator
+ * SmartPasswordLib v1.0.0 - Client-side smart password generator
  * Cross-platform deterministic password generation
  * Same secret + same length = same password across all platforms
  *
@@ -16,11 +16,13 @@
  * - CLI Manager: https://github.com/smartlegionlab/clipassman
  * - CLI Generator: https://github.com/smartlegionlab/clipassgen
  * - Web: https://github.com/smartlegionlab/smart-password-manager-web
+ * - Mobile: https://github.com/smartlegionlab/smart-password-manager-android
  *
  * Author: Alexander Suvorov
  * License: BSD 3-Clause
  * Copyright (c) 2026, Alexander Suvorov
  */
+
 const SmartPasswordLib = (function() {
     'use strict';
 
@@ -28,6 +30,7 @@ const SmartPasswordLib = (function() {
     const CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$&*-_";
     const PRIVATE_ITERATIONS = 30;  // For private key (password generation)
     const PUBLIC_ITERATIONS = 60;   // For public key (verification, stored on server)
+    const VERSION = '1.0.0';
 
     /**
      * SHA-256 hash using Web Crypto API
@@ -64,14 +67,14 @@ const SmartPasswordLib = (function() {
         if (!secret || secret.length < 12) {
             throw new Error(`Secret phrase must be at least 12 characters. Current: ${secret ? secret.length : 0}`);
         }
-        
+
         let allHash = await sha256(secret);
-        
+
         for (let i = 0; i < iterations; i++) {
             const tempString = `${allHash}:${secret}:${i}`;
             allHash = await sha256(tempString);
         }
-        
+
         return allHash;
     }
 
@@ -138,7 +141,6 @@ const SmartPasswordLib = (function() {
      * @returns {Promise<string>} Generated password
      */
     async function generateSmartPassword(secret, length) {
-        // Validate inputs
         if (!secret || secret.length < 12) {
             throw new Error(`Secret phrase must be at least 12 characters. Current: ${secret ? secret.length : 0}`);
         }
@@ -149,10 +151,7 @@ const SmartPasswordLib = (function() {
             throw new Error(`Password length cannot exceed 1000 characters. Current: ${length}`);
         }
 
-        // Step 1: Generate private key from secret phrase (30 iterations)
         const privateKey = await generatePrivateKey(secret);
-        
-        // Step 2: Generate password from private key
         return await generatePasswordFromPrivateKey(privateKey, length);
     }
 
@@ -171,7 +170,7 @@ const SmartPasswordLib = (function() {
 
         const array = new Uint8Array(length);
         crypto.getRandomValues(array);
-        
+
         let result = '';
         for (let i = 0; i < length; i++) {
             result += CHARS[array[i] % CHARS.length];
@@ -203,7 +202,7 @@ const SmartPasswordLib = (function() {
 
         const array = new Uint8Array(length);
         crypto.getRandomValues(array);
-        
+
         let result = '';
         for (let i = 0; i < length; i++) {
             result += CHARS[array[i] % CHARS.length];
@@ -213,7 +212,7 @@ const SmartPasswordLib = (function() {
 
     // Public API
     return {
-        VERSION: '3.0.0',
+        VERSION: VERSION,
         CHARS: CHARS,
         PRIVATE_ITERATIONS: PRIVATE_ITERATIONS,
         PUBLIC_ITERATIONS: PUBLIC_ITERATIONS,
