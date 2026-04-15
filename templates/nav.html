@@ -28,13 +28,17 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="{% url "users:user_detail" %}"><i
                                     class="bi bi-house-door-fill"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-primary" href="{% url "smart_passwords:smart_password_list" %}"><i
                                     class="bi bi-lock-fill text-primary"></i> Smart Passwords</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             {% if request.user.is_superuser %}
                                 <li><a class="dropdown-item text-success" href="{% url "admin_panel:admin_panel" %}">
                                     <i class="bi bi-diagram-3-fill"></i> Admin Panel</a></li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li><a target="_blank" rel="noopener noreferrer" class="dropdown-item text-warning" href="{% url "admin:index" %}"><i class="bi bi-cpu"></i> Admin (Django)</a></li>
                             {% endif %}
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{% url "users:logout" %}">
                                 <i class="bi bi-door-closed"></i> Exit</a></li>
                         </ul>
