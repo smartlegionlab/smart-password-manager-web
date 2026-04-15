@@ -40,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             return static('images/male.jpeg')
         elif self.gender == "F":
             return static('images/female.jpeg')
-        return static('images/default_avatar.png')
+        return static('images/default.jpeg')
 
     def toggle_2fa(self):
         self.is_2fa_enabled = not self.is_2fa_enabled
