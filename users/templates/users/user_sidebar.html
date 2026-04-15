@@ -41,17 +41,7 @@
 
         <div class="btn-group-vertical w-100 figure-img img-thumbnail rounded" role="group"
              style="box-shadow: 0 0 5px darkred">
-            {% if request.user.is_superuser %}
-                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Admin Panel" href='{% url "admin_panel:admin_panel" %}'
-               class="btn mb-1 {% if active_page == 'admin_panel' %}btn-success{% else %}btn-outline-success{% endif %}">
-                <i class="bi bi-cpu{% if active_page == 'admin_panel' %}-fill{% endif %}"></i> Admin Panel
-            </a>
-                <a target="_blank" rel="noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Admin Django" href='{% url "admin:index" %}'
-               class="btn mb-1 {% if active_page == 'admin_django' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
-                <i class="bi bi-cpu"></i> Admin (Django)
-            </a>
-            {% endif %}
-            <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings" href='{% url "users:user_update" %}'
+             <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings" href='{% url "users:user_update" %}'
                class="btn mb-1 {% if active_page == 'settings' %}btn-warning{% else %}btn-outline-warning{% endif %}">
                 <i class="bi bi-gear{% if active_page == 'settings' %}-fill{% endif %}"></i> Settings
             </a>
@@ -60,5 +50,21 @@
                class="btn mb-1 {% if active_page == 'password' %}btn-danger{% else %}btn-outline-danger{% endif %}">
                 <i class="bi bi-lock{% if active_page == 'password' %}-fill{% endif %}"></i> Change password
             </a>
+            
         </div>
+        {% if request.user.is_superuser %}
+        <div class="btn-group-vertical w-100 figure-img img-thumbnail rounded" role="group"
+             style="box-shadow: 0 0 5px darkred">
+
+             <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Admin Panel" href='{% url "admin_panel:admin_panel" %}'
+               class="btn mb-1 {% if active_page == 'admin_panel' %}btn-success{% else %}btn-outline-success{% endif %}">
+                <i class="bi bi-diagram-3{% if active_page == 'admin_panel' %}-fill{% endif %}"></i> Admin Panel
+            </a>
+                <a target="_blank" rel="noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Admin Django" href='{% url "admin:index" %}'
+               class="btn mb-1 {% if active_page == 'admin_django' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
+                <i class="bi bi-cpu"></i> Admin (Django)
+            </a>
+
+        </div>
+        {% endif %}
 </div>
