@@ -45,12 +45,22 @@
                class="btn mb-1 {% if active_page == 'settings' %}btn-warning{% else %}btn-outline-warning{% endif %}">
                 <i class="bi bi-gear{% if active_page == 'settings' %}-fill{% endif %}"></i> Settings
             </a>
+            {% if user.is_2fa_enabled %}
+                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Two Factor Manage" href='{% url "users:two_factor_manage" %}'
+                class="btn mb-1 {% if active_page == '2fa' %}btn-success{% else %}btn-outline-success{% endif %}">
+                    <i class="bi bi-shield{% if active_page == '2fa' %}-fill{% endif %}"></i> Two Factor Manage
+                </a>
+            {% else %}
+                <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Two Factor Manage" href='{% url "users:two_factor_setup" %}'
+                    class="btn mb-1 {% if active_page == '2fa' %}btn-warning{% else %}btn-outline-warning{% endif %}">
+                        <i class="bi bi-shield{% if active_page == '2fa' %}-fill{% endif %}"></i> Two Factor Manage
+                </a>
+            {% endif %}
             <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change password"
                href='{% url "users:password_change" %}'
                class="btn mb-1 {% if active_page == 'password' %}btn-danger{% else %}btn-outline-danger{% endif %}">
                 <i class="bi bi-lock{% if active_page == 'password' %}-fill{% endif %}"></i> Change password
             </a>
-            
         </div>
         {% if request.user.is_superuser %}
         <div class="btn-group-vertical w-100 figure-img img-thumbnail rounded" role="group"

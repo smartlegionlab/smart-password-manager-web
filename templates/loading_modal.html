@@ -1,0 +1,87 @@
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body text-center">
+                <div class="bg-dark rounded-3 p-4 shadow-lg" style="min-width: 320px; background: rgba(33, 37, 41, 0.95) !important; backdrop-filter: blur(10px);">
+                    <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5 class="text-white mb-2" id="loadingMessage">Processing...</h5>
+                    <p class="text-white-50 mb-3 small" id="loadingSubMessage">Please wait, this may take a few seconds</p>
+                    
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
+                             role="progressbar" 
+                             style="width: 0%" 
+                             id="loadingProgress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #loadingModal .modal-content {
+        background: transparent;
+    }
+    
+    #loadingModal .bg-dark {
+        background: rgba(33, 37, 41, 0.95) !important;
+    }
+    
+    @keyframes modalPulse {
+        0% {
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    #loadingModal .modal-dialog {
+        animation: modalPulse 0.3s ease-out;
+    }
+</style>
+
+<script>
+function showLoadingModal(message, subMessage) {
+    if (message) {
+        document.getElementById('loadingMessage').textContent = message;
+    }
+    if (subMessage) {
+        document.getElementById('loadingSubMessage').textContent = subMessage;
+    }
+    
+    const progressBar = document.getElementById('loadingProgress');
+    if (progressBar) {
+        progressBar.style.width = '0%';
+    }
+    
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    
+    let progress = 0;
+    const interval = setInterval(function() {
+        progress += 2;
+        if (progress <= 90) {
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+            }
+        } else {
+            clearInterval(interval);
+        }
+    }, 50);
+    
+    return modal;
+}
+
+function hideLoadingModal() {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('loadingModal'));
+    if (modal) {
+        modal.hide();
+    }
+}
+</script>

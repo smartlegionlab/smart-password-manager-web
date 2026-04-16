@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}2FA Verification{% endblock %}
+
+{% block main %}
+<div class="container mt-5 pt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card" style="background: black !important; box-shadow: 0 0 5px #1b9dec;">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">🔐 Two-Factor Authentication</h2>
+                    <p class="text-center text-muted">Please enter the verification code from your authenticator app or a backup code.</p>
+                    
+                    <form method="post" id="twoFactorVerifyForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_code" class="form-label">Verification Code</label>
+                            <input type="text" 
+                                   name="code" 
+                                   id="id_code"
+                                   class="form-control text-center"
+                                   placeholder="Enter 6-digit code or backup code"
+                                   autocomplete="off"
+                                   maxlength="8"
+                                   autofocus
+                                   required>
+                            <div class="form-text text-center mt-2">
+                                Enter 6-digit code from authenticator app or 8-character backup code
+                            </div>
+                            {% if form.code.errors %}
+                                <div class="invalid-feedback d-block text-center">
+                                    {{ form.code.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        {% if remaining_attempts is not None %}
+                            <div class="alert {% if remaining_attempts <= 1 %}alert-warning{% else %}alert-dark{% endif %} text-center">
+                                <i class="bi bi-info-circle"></i> 
+                                Attempts remaining: {{ remaining_attempts }} of {{ max_attempts }}
+                                {% if remaining_attempts == 1 %}
+                                    <br><small class="text-danger">⚠️ Last attempt!</small>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        
+                        {% if failed_attempts > 0 %}
+                            <div class="text-center text-muted small mb-3">
+                                <i class="bi bi-exclamation-triangle"></i> 
+                                Failed attempts: {{ failed_attempts }} of {{ max_attempts }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5" id="verifyBtn">
+                                <i class="bi bi-shield-check"></i> Verify
+                            </button>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <a href="{% url 'users:login' %}" class="text-decoration-none">
+                                <i class="bi bi-arrow-left"></i> Back to Login
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'loading_modal.html' %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('twoFactorVerifyForm');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const codeInput = document.getElementById('id_code');
+    let formSubmitted = false;
+    
+    if (codeInput) {
+        codeInput.focus();
+    }
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            if (formSubmitted) {
+                e.preventDefault();
+                return false;
+            }
+            
+            const code = codeInput.value.trim();
+            
+            if (!code) {
+                e.preventDefault();
+                showError('Please enter your verification code');
+                return false;
+            }
+            
+            if (code.length === 6 && !/^\d+$/.test(code)) {
+                e.preventDefault();
+                showError('TOTP code must contain only digits (0-9)');
+                return false;
+            }
+            
+            if (code.length === 8 && !/^[A-Z0-9]+$/.test(code)) {
+                e.preventDefault();
+                showError('Backup code must contain only uppercase letters and numbers');
+                return false;
+            }
+            
+            formSubmitted = true;
+            
+            if (code.length === 8) {
+                showLoadingModal(
+                    'Verifying backup code...',
+                    'Please wait while we validate your backup code'
+                );
+            } else {
+                showLoadingModal(
+                    'Verifying authentication code...',
+                    'Please wait while we verify your code'
+                );
+            }
+            
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Verifying...';
+            
+            return true;
+        });
+        
+        if (codeInput) {
+            codeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    form.dispatchEvent(new Event('submit'));
+                }
+            });
+        }
+    }
+    
+    function showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
+        errorDiv.role = 'alert';
+        errorDiv.innerHTML = `
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        form.insertAdjacentElement('afterend', errorDiv);
+        
+        setTimeout(() => {
+            if (errorDiv && errorDiv.remove) {
+                errorDiv.remove();
+            }
+        }, 5000);
+        
+        if (codeInput) {
+            codeInput.value = '';
+            codeInput.focus();
+        }
+    }
+});
+</script>
+
+<style>
+    #id_code {
+        font-size: 1.3rem;
+        text-align: center;
+        letter-spacing: 3px;
+        font-family: monospace;
+        padding: 12px;
+    }
+    
+    #id_code:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        transform: scale(1.02);
+        transition: all 0.2s ease;
+    }
+    
+    .btn-lg {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.02);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    .alert-danger {
+        animation: pulse 0.5s ease;
+    }
+</style>
+{% endblock %}

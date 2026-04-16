@@ -7,6 +7,13 @@ from users.views.auth.logout import logout_view
 from users.views.auth.password_change import password_change_view
 from users.views.auth.password_reset import password_reset_view
 from users.views.auth.register import register_view
+from users.views.auth.two_factor_views import (
+    two_factor_backup_codes, 
+    two_factor_disable, 
+    two_factor_manage, 
+    two_factor_setup, 
+    two_factor_verify
+    )
 from users.views.user.user_delete import user_delete_view
 from users.views.user.user_detail import user_detail_view
 from users.views.user.user_update import user_update_view
@@ -28,6 +35,12 @@ urlpatterns = [
     path('password/reset/resend/', resend_password_reset_view, name='resend_password_reset'),
     path('password/reset/<token>/', password_reset_view, name='password_reset'),
     path('password/change/', password_change_view, name='password_change'),
+
+    path('2fa/setup/', two_factor_setup, name='two_factor_setup'),
+    path('2fa/backup-codes/', two_factor_backup_codes, name='two_factor_backup_codes'),
+    path('2fa/manage/', two_factor_manage, name='two_factor_manage'),
+    path('2fa/disable/', two_factor_disable, name='two_factor_disable'),
+    path('2fa/verify/', two_factor_verify, name='two_factor_verify'),
 ]
 
 

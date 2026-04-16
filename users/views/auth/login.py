@@ -9,7 +9,14 @@ from users.models import User
 from auth_logs.models import UserAuthLog
 from core.utils.informers.request_info import RequestInfo
 
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
 
+
+@sensitive_post_parameters('password')
+@csrf_protect
+@never_cache
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('users:user_detail')
@@ -47,6 +54,11 @@ def login_view(request):
                 )
                 messages.error(request, message)
                 return redirect('users:login')
+            
+            if user.is_2fa_enabled:
+                request.session['2fa_user_id'] = user.id
+                messages.info(request, 'Please complete two-factor authentication.')
+                return redirect('users:two_factor_verify')
 
             login(request, user)
             request_informer = RequestInfo(request)

@@ -14,7 +14,6 @@ class BaseAdminUserForm(forms.ModelForm):
             'is_active',
             'is_staff',
             'is_superuser',
-            'is_2fa_enabled',
         ]
         labels = {
             'is_superuser': 'Is Admin'
@@ -24,7 +23,7 @@ class BaseAdminUserForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
-            if field_name in ('is_active', 'is_staff', 'is_superuser', 'is_2fa_enabled'):
+            if field_name in ('is_active', 'is_staff', 'is_superuser',):
                 field.widget.attrs['class'] = 'form-check-input'
 
             if field.required:

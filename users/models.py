@@ -1,6 +1,7 @@
 from datetime import timedelta
 import secrets
 
+import bcrypt
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.cache import cache
 from django.db import models
@@ -8,6 +9,7 @@ from django.templatetags.static import static
 from django.utils import timezone
 
 from django.utils.functional import cached_property
+import pyotp
 
 from users.managers.custom_user import CustomUserManager
 
@@ -27,6 +29,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
     last_activity = models.DateTimeField(default=timezone.now)
     is_2fa_enabled = models.BooleanField(default=False)
+    two_fa_secret = models.CharField(max_length=255, blank=True, null=True)
+    backup_codes = models.JSONField(default=list, blank=True)
     bio = models.TextField(default='', blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='O', blank=True, null=True)
     is_email_verified = models.BooleanField(default=False)
@@ -41,10 +45,52 @@ class User(AbstractBaseUser, PermissionsMixin):
         elif self.gender == "F":
             return static('images/female.jpeg')
         return static('images/default.jpeg')
-
-    def toggle_2fa(self):
-        self.is_2fa_enabled = not self.is_2fa_enabled
+    
+    def enable_2fa(self, secret):
+        self.two_fa_secret = secret
+        self.is_2fa_enabled = True
         self.save()
+    
+    def disable_2fa(self):
+        self.two_fa_secret = None
+        self.is_2fa_enabled = False
+        self.backup_codes = []
+        self.save()
+    
+    def generate_backup_codes(self, num_codes=10):
+        codes = []
+        plain_codes = []
+        
+        for _ in range(num_codes):
+            code = secrets.token_urlsafe(6).upper()[:8]
+            hashed = bcrypt.hashpw(code.encode(), bcrypt.gensalt()).decode()
+            codes.append(hashed)
+            plain_codes.append(code)
+        
+        self.backup_codes = codes
+        self.save()
+        return plain_codes
+    
+    def verify_backup_code(self, code):
+        for i, hashed_code in enumerate(self.backup_codes):
+            if bcrypt.checkpw(code.encode(), hashed_code.encode()):
+                backup_list = list(self.backup_codes)
+                backup_list.pop(i)
+                self.backup_codes = backup_list
+                self.save()
+                return True
+        return False
+    
+    def get_totp_device(self):
+        if self.two_fa_secret:
+            return pyotp.TOTP(self.two_fa_secret, interval=30)
+        return None
+    
+    def verify_totp(self, code):
+        totp = self.get_totp_device()
+        if totp:
+            return totp.verify(code, valid_window=1)
+        return False
 
     @property
     def is_online(self):

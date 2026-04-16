@@ -11,8 +11,7 @@ class AdminUserUpdateForm(BaseAdminUserForm):
     )
 
     class Meta(BaseAdminUserForm.Meta):
-        fields = BaseAdminUserForm.Meta.fields + ['password', 'is_2fa_enabled',]
+        fields = BaseAdminUserForm.Meta.fields + ['password',]
         labels = {
             **BaseAdminUserForm.Meta.labels,
-            'is_2fa_enabled': 'Two-factor authentication',
         }

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Backup Codes{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card" style="background: black !important; box-shadow: 0 0 5px #1b9dec;">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Backup Codes</h2>
+                    
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Important:</strong> Save these backup codes in a safe place. Each code can be used only once.
+                        You will need them if you lose access to your authenticator app.
+                    </div>
+                    
+                    <div class="row mb-4">
+                        {% for code in backup_codes %}
+                            <div class="col-md-6 mb-2">
+                                <code class="bg-dark p-2 d-block text-center border rounded text-success">{{ code }}</code>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="btn btn-secondary" onclick="copyCodes()">Copy to Clipboard</button>
+                        <button class="btn btn-success" onclick="downloadCodes()">Download as Text</button>
+                        <a href="{% url 'users:two_factor_manage' %}" class="btn btn-primary">Continue to Settings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyCodes() {
+    const codes = [...document.querySelectorAll('code')].map(code => code.textContent).join('\n');
+    navigator.clipboard.writeText(codes);
+    alert('Backup codes copied to clipboard!');
+}
+
+function downloadCodes() {
+    const codes = [...document.querySelectorAll('code')].map(code => code.textContent).join('\n');
+    const blob = new Blob([codes], {type: 'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Smart_Password_Manager_Backup_Codes.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+</script>
+{% endblock %}
