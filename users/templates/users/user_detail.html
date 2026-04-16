@@ -21,7 +21,7 @@
         padding: 20px;
         color: #888;
     }
-    li {
+    .li-custom {
         background: black !important;
     }
 </style>
@@ -31,15 +31,11 @@
 
 <h1 class="display-6 text-center">
     {{ request.user.full_name }}
-    <sup style="font-size: 16px">
-        {% if request.user.is_online %}
-            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Online"
-               class="bi bi-circle-fill text-success"></i>
-        {% else %}
-            <i data-bs-toggle="tooltip" data-bs-placement="top" title="Offline"
-               class="bi bi-circle-fill text-danger"></i>
-        {% endif %}
-    </sup>
+    {% if request.user.is_2fa_enabled %}
+        <i data-bs-placement="top" title="2fa enabled! Your account is safe!" class="bi bi-shield-fill text-success"></i>
+    {% else %}
+        <i data-bs-placement="top" title="2fa is not enabled! Please enable it on two factor manage's page." class="bi bi-shield text-danger"></i>
+    {% endif %}
 </h1>
 
 <hr>
@@ -54,37 +50,37 @@
 
 <div class="border p-3 mb-4 rounded" style="box-shadow: 0 0 5px #1b9dec;">
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">
+        <li class="list-group-item li-custom">
             <strong>Name:</strong>
             <span class="text-primary">{{ request.user.first_name }}</span>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item li-custom">
             <strong>Last name:</strong>
             <span class="text-primary">{{ request.user.last_name }}</span>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item li-custom">
             <strong>Email:</strong>
             <span class="text-primary">{{ request.user.email|default:"" }}</span>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item li-custom">
             <strong>Two-factor authentication:</strong>
             <span class="text-primary">
                 {% if request.user.is_2fa_enabled %}
-                    <i class="bi bi-check-circle text-success"></i> Enabled
+                    <i class="bi bi-check-circle text-success"></i> <span class="text-success">Enable</span>
                 {% else %}
-                    <i class="bi bi-x-circle text-danger"></i> Disabled
+                    <i class="bi bi-x-circle text-danger"></i> <span class="text-danger">Disabled</span>
                 {% endif %}
             </span>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item li-custom">
             <strong>Account updated:</strong>
             <span class="text-primary">{{ request.user.updated_at|timesince }} ago</span>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item li-custom">
             <strong>Account created:</strong>
             <span class="text-primary">{{ request.user.created_at|date:"d.m.Y H:i:s" }}</span>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item li-custom">
             <strong>Smart Passwords:</strong>
             <span class="text-primary">
                 <a href="{% url 'smart_passwords:smart_password_list' %}">{{ request.user.smart_passwords.count }}</a>
@@ -92,6 +88,18 @@
         </li>
     </ul>
 </div>
+
+{% if not request.user.is_2fa_enabled %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> 
+        <strong>⚠️ Two-Factor Authentication is disabled</strong>
+        <br>
+        <small>Protect your account by enabling 2FA. 
+            <a href="{% url 'users:two_factor_setup' %}" class="alert-link">Enable now</a>
+        </small>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
 
 <div class="border p-3 rounded" style="box-shadow: 0 0 5px #1b9dec">
     <h4 class="mb-3">

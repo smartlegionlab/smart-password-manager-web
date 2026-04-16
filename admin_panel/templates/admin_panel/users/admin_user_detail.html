@@ -8,9 +8,9 @@
 
 {% block content %}
 
-    {% block style %}
+    {% block css %}
         <style>
-            li {
+            .li-custom {
                 background: black !important;
             }
             .div-custom {
@@ -25,13 +25,13 @@
     <hr>
     <div class="border p-3 mb-3 div-custom">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Name:</strong> <span
+            <li class="list-group-item li-custom"><strong>Name:</strong> <span
                     class="text-primary">{{ user.first_name }}</span></li>
-            <li class="list-group-item"><strong>Last name:</strong> <span
+            <li class="list-group-item li-custom"><strong>Last name:</strong> <span
                     class="text-primary">{{ user.last_name }}</span></li>
-            <li class="list-group-item"><strong>Email:</strong> <span class="text-primary">{% if user.email %}
+            <li class="list-group-item li-custom"><strong>Email:</strong> <span class="text-primary">{% if user.email %}
                 {{ user.email }}{% endif %}</span></li>
-            <li class="list-group-item">
+            <li class="list-group-item li-custom">
                 <strong>Two-factor authentication:</strong>
                 <span class="text-primary">
                                 {% if user.is_2fa_enabled %}
@@ -41,7 +41,7 @@
                                 {% endif %}
                             </span>
             </li>
-            <li class="list-group-item"><strong>Is active:</strong>
+            <li class="list-group-item li-custom"><strong>Is active:</strong>
                 <span class="text-primary">
                     {% if user.is_active %}
                         <i class="bi bi-check-circle text-success" title="Active"></i>
@@ -50,7 +50,7 @@
                     {% endif %}
                 </span>
             </li>
-            <li class="list-group-item"><strong>Is Superuser:</strong>
+            <li class="list-group-item li-custom"><strong>Is Superuser:</strong>
                 <span class="text-primary">
                     {% if user.is_superuser %}
                         <i class="bi bi-check-circle text-success" title="Is Superuser"></i>
@@ -59,9 +59,9 @@
                     {% endif %}
                 </span>
             </li>
-            <li class="list-group-item"><strong>Account updated:</strong> <span
+            <li class="list-group-item li-custom"><strong>Account updated:</strong> <span
                     class="text-primary">{{ user.updated_at|date:"d.m.Y H:i:s" }}</span></li>
-            <li class="list-group-item"><strong>Account created:</strong> <span
+            <li class="list-group-item li-custom"><strong>Account created:</strong> <span
                     class="text-primary">{{ user.created_at|date:"d.m.Y H:i:s" }}</span></li>
         </ul>
     </div>

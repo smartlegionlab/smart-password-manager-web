@@ -9,9 +9,9 @@
 
 {% block content %}
 
-    {% block style %}
+    {% block css %}
         <style>
-            li {
+            .li-custom {
                 background: black !important;
             }
             .list-group-custom {
@@ -27,11 +27,11 @@
         <hr>
 
         <ul class="list-group list-group-custom">
-            <li class="list-group-item"><strong>App Name:</strong> <span
+            <li class="list-group-item li-custom"><strong>App Name:</strong> <span
                     class="text-primary">{{ site_config.name }}</span></li>
-            <li class="list-group-item"><strong>App description:</strong> <span
+            <li class="list-group-item li-custom"><strong>App description:</strong> <span
                     class="text-primary">{{ site_config.description }}</span></li>
-            <li class="list-group-item"><strong>Email:</strong> <span
+            <li class="list-group-item li-custom"><strong>Email:</strong> <span
                     class="text-primary">{{ site_config.email }}</span></li>
         </ul>
 

@@ -183,7 +183,7 @@ def two_factor_disable(request):
         if form.is_valid():
             user.disable_2fa()
             messages.success(request, '2FA has been disabled for your account.')
-            return redirect('users:user_update')
+            return redirect('users:user_detail')
     else:
         form = Disable2FAForm(user)
     

@@ -8,9 +8,9 @@
 
 {% block content %}
 
-    {% block style %}
+    {% block css %}
         <style>
-            li {
+            .li-custom {
                 background: black !important;
             }
             .list-group-custom {
@@ -23,34 +23,34 @@
     <hr>
 
     <ul class="list-group list-group-custom">
-        <li class="list-group-item"><strong>System boot time:</strong> <span id="boot_time"
+        <li class="list-group-item li-custom"><strong>System boot time:</strong> <span id="boot_time"
                                                                              class="text-success">{{ system_info_master.info.boot_time_str }}</span>
         </li>
-        <li class="list-group-item"><strong>CPU number of physical cores:</strong> <span id="cpu_count_real"
+        <li class="list-group-item li-custom"><strong>CPU number of physical cores:</strong> <span id="cpu_count_real"
                                                                                          class="text-success">{{ system_info_master.cpu.count_real }}</span>
         </li>
-        <li class="list-group-item"><strong>CPU number of logical cores:</strong> <span id="cpu_count"
+        <li class="list-group-item li-custom"><strong>CPU number of logical cores:</strong> <span id="cpu_count"
                                                                                         class="text-success">{{ system_info_master.cpu.count }}</span>
         </li>
-        <li class="list-group-item"><strong>CPU load system wide:</strong> <span id="cpu_percent"
+        <li class="list-group-item li-custom"><strong>CPU load system wide:</strong> <span id="cpu_percent"
                                                                                  class="text-success">{{ system_info_master.cpu.percent_str }}</span>
         </li>
-        <li class="list-group-item"><strong>Memory (total):</strong> <span id="memory_total"
+        <li class="list-group-item li-custom"><strong>Memory (total):</strong> <span id="memory_total"
                                                                            class="text-success">{{ system_info_master.memory.total_str }}</span>
         </li>
-        <li class="list-group-item"><strong>Memory (available):</strong> <span id="memory_available"
+        <li class="list-group-item li-custom"><strong>Memory (available):</strong> <span id="memory_available"
                                                                                class="text-success">{{ system_info_master.memory.available_str }}</span>
         </li>
-        <li class="list-group-item"><strong>Memory (free):</strong> <span id="memory_free"
+        <li class="list-group-item li-custom"><strong>Memory (free):</strong> <span id="memory_free"
                                                                           class="text-success">{{ system_info_master.memory.free_str }}</span>
         </li>
-        <li class="list-group-item"><strong>Memory (in use):</strong> <span id="memory_used"
+        <li class="list-group-item li-custom"><strong>Memory (in use):</strong> <span id="memory_used"
                                                                             class="text-success">{{ system_info_master.memory.used_str }}</span>
         </li>
-        <li class="list-group-item"><strong>Memory (percentage of load):</strong> <span id="memory_percent"
+        <li class="list-group-item li-custom"><strong>Memory (percentage of load):</strong> <span id="memory_percent"
                                                                                         class="text-success">{{ system_info_master.memory.percent_str }}</span>
         </li>
-        <li class="list-group-item"><strong>Disk: </strong> <span id="disk_data" class="text-primary">Total: <span
+        <li class="list-group-item li-custom"><strong>Disk: </strong> <span id="disk_data" class="text-primary">Total: <span
                 class="text-success" id="disk_data_total">{{ system_info_master.disk.system_usage.total }}</span> | Busy: <span
                 class="text-success" id="disk_data_used">{{ system_info_master.disk.system_usage.used }}</span> | Available: <span
                 class="text-success" id="disk_data_free">{{ system_info_master.disk.system_usage.free }}</span> | Utilization percentage: <span
