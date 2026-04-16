@@ -1,4 +1,4 @@
-# Smart Password Manager Web <sup>v2.0.5</sup>
+# Smart Password Manager Web <sup>v2.1.0</sup>
 
 ---
 
@@ -26,14 +26,14 @@
 
 ## 🔄 Important: Breaking Change from v1.x.x
 
-> **⚠️ This release (v2.0.5) uses a completely redesigned cryptographic algorithm that is NOT backward compatible with v1.x.x**
+> **⚠️ This release (v2.1.0) uses a completely redesigned cryptographic algorithm that is NOT backward compatible with v1.x.x**
 
 ### What changed:
 
 - The core password generation algorithm has been completely redesigned
 - **All generation now happens in your browser** — secret never leaves your device
 - **Cross-platform compatibility** — same passwords as Python, Go, Kotlin, JS versions
-- Smart passwords created with v1.3.7 or earlier **cannot be regenerated** using v2.0.5
+- Smart passwords created with v1.3.7 or earlier **cannot be regenerated** using v2.1.0
 - Existing password entries in the database will produce **different passwords** if regenerated
 
 ### What you need to do:
@@ -205,7 +205,7 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 
 ## Migration Section
 
-### Migrating from v1.x.x to v2.0.5
+### Migrating from v1.x.x to v2.1.0
 
 **⚠️ Before upgrading — follow these steps carefully**
 
@@ -219,7 +219,7 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 pg_dump -U postgres smart_password_manager_db > backup_v1.sql
 ```
 
-**Step 3: Upgrade to v2.0.5**
+**Step 3: Upgrade to v2.1.0**
 ```bash
 # Pull latest code
 git pull origin master
@@ -232,14 +232,14 @@ python manage.py migrate
 - Delete old password entries and add new ones manually using the same secret phrases
 
 **Step 5: Update passwords in all your services**
-- After regenerating passwords with v2.0.5, update them in each website/service
+- After regenerating passwords with v2.1.0, update them in each website/service
 - Test login before removing old access
 
-**Important**: v1.x.x and v2.0.5 passwords are NOT compatible. You must regenerate all passwords.
+**Important**: v1.x.x and v2.1.0 passwords are NOT compatible. You must regenerate all passwords.
 
 ---
 
-## What's New in v2.0.5
+## What's New in v2.1.0
 
 ### Complete Rewrite with Client-Side Generation
 
@@ -336,8 +336,8 @@ This web application is part of a comprehensive suite:
 
 | Version          | Generation  | Status                   | Migration Required     |
 |------------------|-------------|--------------------------|------------------------|
-| v1.3.7 and below | Server-side | ❌ Deprecated/Unsupported | Must migrate to v2.0.5 |
-| v2.0.5+          | Client-side | ✅ Current                | N/A                    |
+| v1.3.7 and below | Server-side | ❌ Deprecated/Unsupported | Must migrate to v2.1.0 |
+| v2.1.0+          | Client-side | ✅ Current                | N/A                    |
 
 ## License
 

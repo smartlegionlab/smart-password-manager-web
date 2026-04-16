@@ -15,7 +15,7 @@ def api_export_passwords(request):
         export_data = {
             "_metadata": {
                 "exported_at": datetime.now().isoformat(),
-                "app_version": "v2.0.5",
+                "app_version": "v2.1.0",
                 "lib_version": "v1.0.1",
                 "count": passwords.count(),
                 "device_type": "web",
