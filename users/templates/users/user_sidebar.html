@@ -23,7 +23,7 @@
 
 <div id="blockMenu">
     <div class="btn-group-vertical w-100 figure-img img-thumbnail rounded" role="group"
-             style="box-shadow: 0 0 5px #1b9dec">
+             style="box-shadow: 0 0 5px #1b9dec; background: black;">
 
             <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile" href="{% url 'users:user_detail' %}"
                class="btn mb-1 {% if active_page == 'profile' %}btn-primary{% else %}btn-outline-primary{% endif %}">
@@ -40,7 +40,7 @@
         </div>
 
         <div class="btn-group-vertical w-100 figure-img img-thumbnail rounded" role="group"
-             style="box-shadow: 0 0 5px darkred">
+             style="box-shadow: 0 0 5px darkred; background: black;">
              <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings" href='{% url "users:user_update" %}'
                class="btn mb-1 {% if active_page == 'settings' %}btn-warning{% else %}btn-outline-warning{% endif %}">
                 <i class="bi bi-gear{% if active_page == 'settings' %}-fill{% endif %}"></i> Settings
@@ -54,7 +54,7 @@
         </div>
         {% if request.user.is_superuser %}
         <div class="btn-group-vertical w-100 figure-img img-thumbnail rounded" role="group"
-             style="box-shadow: 0 0 5px darkred">
+             style="box-shadow: 0 0 5px darkred; background: black;">
 
              <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Admin Panel" href='{% url "admin_panel:admin_panel" %}'
                class="btn mb-1 {% if active_page == 'admin_panel' %}btn-success{% else %}btn-outline-success{% endif %}">

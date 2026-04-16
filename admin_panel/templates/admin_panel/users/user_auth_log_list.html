@@ -26,7 +26,7 @@
         <div class="table-responsive">
         <table id="logsTable" class="table table-bordered table-striped">
             <thead>
-            <tr class="table-primary">
+            <tr>
                 <th scope="col">IP</th>
                 <th scope="col">User Agent</th>
                 <th scope="col">Date</th>
@@ -43,7 +43,7 @@
                             <div class="btn-group btn-group-sm" role="group">
                                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="Detail"
                                    href="{% url "admin_panel:admin_user_auth_log_detail" log.id %}"
-                                   class="btn btn-outline-info">
+                                   class="btn btn-outline-primary">
                                     <i class="bi bi-eye-fill"></i>
                                 </a>
                                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"

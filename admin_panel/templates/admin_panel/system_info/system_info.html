@@ -8,10 +8,21 @@
 
 {% block content %}
 
+    {% block style %}
+        <style>
+            li {
+                background: black !important;
+            }
+            .list-group-custom {
+                box-shadow: 0 0 5px #1b9dec;
+            }
+        </style>
+    {% endblock %}
+
     <h2 style="text-align: center" class="display-6">System Information: </h2>
     <hr>
 
-    <ul class="list-group">
+    <ul class="list-group list-group-custom">
         <li class="list-group-item"><strong>System boot time:</strong> <span id="boot_time"
                                                                              class="text-success">{{ system_info_master.info.boot_time_str }}</span>
         </li>

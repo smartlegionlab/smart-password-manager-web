@@ -7,11 +7,23 @@
 {% endblock %}
 
 {% block content %}
+
+    {% block style %}
+        <style>
+            li {
+                background: black !important;
+            }
+            .div-custom {
+                box-shadow: 0 0 5px #1b9dec;
+            }
+        </style>
+    {% endblock %}
+
     <hr>
     <h1 class="text-center display-6">{{ user.full_name }} <sup>{% if user.is_active %}
         <span class="text-success">Active</span>{% else %}<span class="text-danger">Blocked</span>{% endif %}</sup></h1>
     <hr>
-    <div class="border p-3 mb-3">
+    <div class="border p-3 mb-3 div-custom">
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>Name:</strong> <span
                     class="text-primary">{{ user.first_name }}</span></li>
