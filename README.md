@@ -1,8 +1,14 @@
-# Smart Password Manager Web <sup>v2.1.0</sup>
+# Smart Password Manager Web <sup>v2.1.1</sup>
 
 ---
 
 **Web-based smart password manager with deterministic password generation. Generate, manage, and retrieve passwords without storing them. Your secret phrase never leaves your browser.**
+
+**Decentralized by Design**: Unlike traditional password managers that store encrypted vaults on central servers, 
+smartpasslib stores nothing. Your secrets never leave your device. Passwords are regenerated on-demand — 
+**no cloud, no database, no trust required**. The server stores only metadata (description, length, public key) 
+for verification — never your secret phrase or actual password. Internet connection is only needed to load the 
+page and sync metadata; all cryptographic operations happen locally in your browser.
 
 ---
 
@@ -24,41 +30,28 @@
 
 ---
 
-## 🔄 Important: Breaking Change from v1.x.x
+## 🔄 Breaking Change (v2.x.x)
 
-> **⚠️ This release (v2.1.0) uses a completely redesigned cryptographic algorithm that is NOT backward compatible with v1.x.x**
+> **⚠️ This version is NOT backward compatible with v1.x.x**
 
-### What changed:
+Passwords generated with older versions **cannot be regenerated** with v2.x.x.
 
-- The core password generation algorithm has been completely redesigned
-- **All generation now happens in your browser** — secret never leaves your device
-- **Cross-platform compatibility** — same passwords as Python, Go, Kotlin, JS versions
-- Smart passwords created with v1.3.7 or earlier **cannot be regenerated** using v2.1.0
-- Existing password entries in the database will produce **different passwords** if regenerated
-
-### What you need to do:
-
-1. **Before upgrading** — retrieve and save all your existing passwords from the old version
-2. **After upgrading** — recreate each password using the same secret phrases + lengths
-3. **Update** your passwords on all websites/services
-
-**No automatic migration** — you must manually regenerate every password.
-
-📖 **Full migration instructions** → see [Migration Section](#migration-section)
+📖 **Full migration instructions** → see [MIGRATION.md](https://github.com/smartlegionlab/smart-password-manager-web/blob/master/MIGRATION.md)
 
 ---
 
 ## Core Principles
 
-- **Zero-Password Storage**: No passwords are ever stored or transmitted
+- **Zero-Storage Security**: No passwords or secret phrases are ever stored or transmitted
+- **Decentralized Architecture**: No central servers, no cloud dependency, no third-party trust required
 - **Deterministic Regeneration**: Passwords are recreated identically from your secret phrase
-- **Metadata Management**: Store only descriptions and verification keys
+- **Metadata Only**: Store only descriptions and verification keys
 - **Client-Side Generation**: All cryptographic operations happen in your browser
-- **Cross-Platform**: Same passwords as Python, Go, Kotlin, JS implementations
 - **On-Demand Discovery**: Passwords exist only when you generate them
 
 ## Key Features
 
+- **Decentralized & Serverless**: No central database, no cloud lock-in, complete user sovereignty
 - **Smart Password Generation**: Deterministic from secret phrase
 - **Client-Side Processing**: Secret phrase never leaves your browser
 - **Cross-Platform Compatible**: Same passwords as desktop, CLI, and mobile apps
@@ -73,6 +66,7 @@
 ## Security Model
 
 - **Proof of Knowledge**: Public keys verify secrets without exposing them
+- **Decentralized Trust**: No third party needed — you control your secrets completely
 - **Deterministic Security**: Same secret + length = same password, always
 - **Metadata Separation**: Non-sensitive data stored on server
 - **Local Processing**: Secret and password never leave your browser
@@ -91,7 +85,7 @@
 
 Powered by **[smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js)** — JavaScript implementation of deterministic password generation.
 
-**Key derivation (same as Python/Go/Kotlin versions):**
+**Key derivation (same as Python/Go/Kotlin/C# versions):**
 
 | Key Type    | Iterations | Purpose                                               |
 |-------------|------------|-------------------------------------------------------|
@@ -99,6 +93,11 @@ Powered by **[smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js
 | Public Key  | 60         | Verification (stored on server)                       |
 
 **Character Set:** `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$&*-_`
+
+**Decentralized Architecture**:
+- No central authority required
+- Metadata can be synced via any channel
+- Your security depends only on your secret phrase
 
 ## Quick Start
 
@@ -203,58 +202,40 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 
 ---
 
-## Migration Section
+## Security Requirements
 
-### Migrating from v1.x.x to v2.1.0
+### Secret Phrase
+- **Minimum 12 characters** (enforced)
+- Case-sensitive
+- Use mix of: uppercase, lowercase, numbers, symbols, emoji, or Cyrillic
+- Never store digitally
+- **NEVER use your password description as secret phrase**
 
-**⚠️ Before upgrading — follow these steps carefully**
-
-**Step 1: Document your existing passwords**
-- Open your current Smart Password Manager Web (v1.3.7 or earlier)
-- For each password entry, retrieve the actual password using your secret phrase
-- Save passwords in a secure temporary location (e.g., encrypted note)
-
-**Step 2: Backup your database (optional)**
-```bash
-pg_dump -U postgres smart_password_manager_db > backup_v1.sql
+### Strong Secret Examples
+```
+✅ "MyStrongSecretPhrase2026!"   — mixed case + numbers + symbols
+✅ "P@ssw0rd!LongSecret"         — special chars + numbers + length
+✅ "КотБегемот2026НаДиете"       — Cyrillic + numbers
 ```
 
-**Step 3: Upgrade to v2.1.0**
-```bash
-# Pull latest code
-git pull origin master
-
-# Apply migrations (if any)
-python manage.py migrate
+### Weak Secret Examples (avoid)
+```
+❌ "GitHub Account"              — using description as secret (weak!)
+❌ "password"                    — dictionary word, too short
+❌ "1234567890"                  — only digits, too short
+❌ "qwerty123"                   — keyboard pattern
+❌ Same as description           — never use the same value as password description
 ```
 
-**Step 4: Migrate your data**
-- Delete old password entries and add new ones manually using the same secret phrases
+### Decentralized Nature
 
-**Step 5: Update passwords in all your services**
-- After regenerating passwords with v2.1.0, update them in each website/service
-- Test login before removing old access
+**There is no "forgot password" button.** This is by design:
 
-**Important**: v1.x.x and v2.1.0 passwords are NOT compatible. You must regenerate all passwords.
+- No central server can reset your passwords
+- No support team can recover your access
+- Your secret phrase is the ONLY key
 
----
-
-## What's New in v2.1.0
-
-### Complete Rewrite with Client-Side Generation
-
-- **Secret phrase never leaves your browser** — all cryptographic operations happen locally
-- **Cross-platform compatible** — same passwords as desktop, CLI, and mobile apps
-- **Server stores only metadata** — description, length, public key
-- **Public key verification** — secret verified locally without transmission
-- **No Python crypto dependencies** — pure JavaScript in the browser
-
-### Security Enhancements
-
-- **Minimum 12 characters** enforced for secret phrases
-- **Minimum password length** set to 12 characters (default 16)
-- **Client-side validation** with visual feedback
-- **Strong secret examples** in the UI
+**This is the price of true decentralization** — you are completely in control.
 
 ## Interface Preview
 
@@ -268,40 +249,6 @@ python manage.py migrate
 - **Frontend**: HTML5, CSS3, JavaScript
 - **Client Crypto**: smartpasslib-js (Web Crypto API)
 
-### Security Requirements
-
-| Field           | Minimum  | Default  | Maximum   |
-|-----------------|----------|----------|-----------|
-| Secret phrase   | 12 chars | -        | unlimited |
-| Password length | 12 chars | 16 chars | 100 chars |
-| Description     | 1 char   | -        | 255 chars |
-
-## Security Requirements
-
-### Secret Phrase
-- **Minimum 12 characters** (enforced)
-- Case-sensitive
-- Use mix of: uppercase, lowercase, numbers, symbols, emoji, or Cyrillic
-- Never store digitally
-- **NEVER use your password description as secret phrase**
-
-### Strong Secret Examples
-```
-✅ "MyCatHippo2026"          — mixed case + numbers
-✅ "P@ssw0rd!LongSecret"     — special chars + numbers + length
-✅ "КотБегемот2026НаДиете"   — Cyrillic + numbers
-✅ "GitHubPersonal2026!"     — description + extra chars (not description alone)
-```
-
-### Weak Secret Examples (avoid)
-```
-❌ "GitHub Account"          — using description as secret (weak!)
-❌ "password"                — dictionary word, too short
-❌ "1234567890"              — only digits, too short
-❌ "qwerty123"               — keyboard pattern
-❌ Same as description       — never use the same value as password description
-```
-
 ## Cross-Platform Compatibility
 
 Smart Password Manager Web produces **identical passwords** to:
@@ -314,30 +261,37 @@ Smart Password Manager Web produces **identical passwords** to:
 | Python     | [smartpasslib](https://github.com/smartlegionlab/smartpasslib)                                                            |
 | Go         | [smartpasslib-go](https://github.com/smartlegionlab/smartpasslib-go)                                                      |
 | Kotlin     | [smartpasslib-kotlin](https://github.com/smartlegionlab/smartpasslib-kotlin)                                              |
+| C#         | [smartpasslib-csharp](https://github.com/smartlegionlab/smartpasslib-csharp)                                              |
 
 ## Ecosystem
 
-This web application is part of a comprehensive suite:
+**Core Libraries:**
+- **[smartpasslib](https://github.com/smartlegionlab/smartpasslib)** - Python
+- **[smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js)** - JavaScript
+- **[smartpasslib-kotlin](https://github.com/smartlegionlab/smartpasslib-kotlin)** - Kotlin
+- **[smartpasslib-go](https://github.com/smartlegionlab/smartpasslib-go)** - Go
+- **[smartpasslib-csharp](https://github.com/smartlegionlab/smartpasslib-csharp)** - C#
 
-### Core Libraries
-- **[smartpasslib](https://github.com/smartlegionlab/smartpasslib)** - Python implementation
-- **[smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js)** - JavaScript implementation
-- **[smartpasslib-kotlin](https://github.com/smartlegionlab/smartpasslib-kotlin)** - Kotlin implementation
-- **[smartpasslib-go](https://github.com/smartlegionlab/smartpasslib-go)** - Go implementation
+**CLI Applications:**
+- **[CLI Smart Password Manager (Python)](https://github.com/smartlegionlab/clipassman)**
+- **[CLI Smart Password Generator (Python)](https://github.com/smartlegionlab/clipassgen)**
+- **[CLI Smart Password Manager (C#)](https://github.com/smartlegionlab/SmartPasswordManagerCsharpCli)**
+- **[CLI Smart Password Generator (C#)](https://github.com/smartlegionlab/SmartPasswordGeneratorCsharpCli)** 
 
-### Applications
-- **[Desktop Manager](https://github.com/smartlegionlab/smart-password-manager-desktop)** - Cross-platform desktop application
-- **[CLI PassGen](https://github.com/smartlegionlab/clipassgen/)** - Command-line password generator
-- **[CLI PassMan](https://github.com/smartlegionlab/clipassman/)** - Console-based password manager
-- **[Web Manager](https://github.com/smartlegionlab/smart-password-manager-web)** - Web interface (this project)
-- **[Android Manager](https://github.com/smartlegionlab/smart-password-manager-android)** - Mobile Android app
+**Desktop Applications:**
+- **[Desktop Smart Password Manager (Python)](https://github.com/smartlegionlab/smart-password-manager-desktop)**
+- **[Desktop Smart Password Manager (C#)](https://github.com/smartlegionlab/SmartPasswordManagerCsharpDesktop)**
+
+**Other:**
+- **[Web Smart Password Manager](https://github.com/smartlegionlab/smart-password-manager-web)** (this)
+- **[Android Smart Password Manager](https://github.com/smartlegionlab/smart-password-manager-android)**
 
 ## Version History
 
 | Version          | Generation  | Status                   | Migration Required     |
 |------------------|-------------|--------------------------|------------------------|
-| v1.3.7 and below | Server-side | ❌ Deprecated/Unsupported | Must migrate to v2.1.0 |
-| v2.1.0+          | Client-side | ✅ Current                | N/A                    |
+| v1.3.7 and below | Server-side | ❌ Deprecated/Unsupported | Must migrate to v2.x.x |
+| v2.x.x+          | Client-side | ✅ Current                | N/A                    |
 
 ## License
 
@@ -354,7 +308,5 @@ Copyright (©) 2026, [Alexander Suvorov](https://github.com/smartlegionlab)
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/smartlegionlab/smart-password-manager-web/issues)
-- **Documentation**: This README
-
----
+- **Documentation**: This [README](https://github.com/smartlegionlab/smart-password-manager-web/blob/master/README.md)
 

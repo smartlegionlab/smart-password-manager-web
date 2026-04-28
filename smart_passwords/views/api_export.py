@@ -15,11 +15,13 @@ def api_export_passwords(request):
         export_data = {
             "_metadata": {
                 "exported_at": datetime.now().isoformat(),
-                "app_version": "v2.1.0",
-                "lib_version": "v1.0.1",
+                "app_name": "Smart Password Manager (Web)",
+                "app_version": "v2.1.1",
+                "app_type": "Web",
+                "lib_name": "smartpasslib-js",
+                "lib_version": "v1.0.3",
+                "lib_lang": "Java Script",
                 "count": passwords.count(),
-                "device_type": "web",
-                "library_type": "smartpasslib-js"
             }
         }
 

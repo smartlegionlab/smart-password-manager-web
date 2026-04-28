@@ -1,38 +1,48 @@
 /**
- * Smart Passwords Library v1.0.1 - Client-side smart password generator
+ * SmartPassLib v1.0.3 - Client-side smart password generator
  * Cross-platform deterministic password generation
  * Same secret + same length = same password across all platforms
+ * Decentralized by design — no central servers, no cloud dependency, no third-party trust required
  *
- * Compatible with smartpasslib Python/Go/Kotlin/JS implementations
+ * Compatible with smartpasslib Python/Go/Kotlin/C# implementations
  *
  * Key derivation:
  * - Private key: 30 iterations of SHA-256 (used for password generation)
- * - Public key: 60 iterations of SHA-256 (used for verification, stored on server)
+ * - Public key: 60 iterations of SHA-256 (used for verification, stored locally)
+ *
+ * Secret phrase:
+ *   - is not transferred anywhere
+ *   - is not stored anywhere
+ *   - is required to generate the private key when creating a smart password
  *
  * Ecosystem:
- * - Core library (Python): https://github.com/smartlegionlab/smartpasslib
- * - Core library (JS): https://github.com/smartlegionlab/smartpasslib-js
- * - Core library (Kotlin): https://github.com/smartlegionlab/smartpasslib-kotlin
- * - Core library (Go): https://github.com/smartlegionlab/smartpasslib-go
- * - Desktop: https://github.com/smartlegionlab/smart-password-manager-desktop
- * - CLI Manager: https://github.com/smartlegionlab/clipassman
- * - CLI Generator: https://github.com/smartlegionlab/clipassgen
- * - Web: https://github.com/smartlegionlab/smart-password-manager-web
- * - Android: https://github.com/smartlegionlab/smart-password-manager-android
+ *   - Core library (Python): https://github.com/smartlegionlab/smartpasslib
+ *   - Core library (JS): https://github.com/smartlegionlab/smartpasslib-js
+ *   - Core library (Kotlin): https://github.com/smartlegionlab/smartpasslib-kotlin
+ *   - Core library (Go): https://github.com/smartlegionlab/smartpasslib-go
+ *   - Core library (C#): https://github.com/smartlegionlab/smartpasslib-csharp
+ *   - Desktop Python: https://github.com/smartlegionlab/smart-password-manager-desktop
+ *   - Desktop C#: https://github.com/smartlegionlab/SmartPasswordManagerCsharpDesktop
+ *   - CLI Manager Python: https://github.com/smartlegionlab/clipassman
+ *   - CLI Manager C#: https://github.com/smartlegionlab/SmartPasswordManagerCsharpCli
+ *   - CLI Generator Python: https://github.com/smartlegionlab/clipassgen
+ *   - CLI Generator C#: https://github.com/smartlegionlab/SmartPasswordGeneratorCsharpCli
+ *   - Web: https://github.com/smartlegionlab/smart-password-manager-web
+ *   - Android: https://github.com/smartlegionlab/smart-password-manager-android
  *
- * Author: Alexander Suvorov
- * License: BSD 3-Clause
- * Copyright (c) 2026, Alexander Suvorov
+ * Author: Alexander Suvorov https://github.com/smartlegionlab
+ * License: BSD 3-Clause https://github.com/smartlegionlab/smartpasslib-js/blob/master/LICENSE
+ * Copyright (c) 2026, Alexander Suvorov. All rights reserved.
  */
 
-const SmartPasswordLib = (function() {
+const SmartPassLib = (function() {
     'use strict';
 
     // Character set for password generation (must match smartpasslib)
     const CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$&*-_";
     const PRIVATE_ITERATIONS = 30;  // For private key (password generation)
     const PUBLIC_ITERATIONS = 60;   // For public key (verification, stored on server)
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.3';
 
     /**
      * SHA-256 hash using Web Crypto API
@@ -232,8 +242,8 @@ const SmartPasswordLib = (function() {
 
 // Export for different environments
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = SmartPasswordLib;
+    module.exports = SmartPassLib;
 }
 if (typeof window !== 'undefined') {
-    window.SmartPasswordLib = SmartPasswordLib;
+    window.SmartPassLib = SmartPassLib;
 }
