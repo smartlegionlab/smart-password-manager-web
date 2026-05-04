@@ -68,7 +68,7 @@ def login_view(request):
                 user_agent=request_informer.user_agent,
             )
             messages.success(request, f'{user.full_name}, welcome!')
-            return redirect('users:user_detail')
+            return redirect('smart_passwords:smart_password_list')
 
         else:
             messages.error(request, 'Please correct the errors below.')

@@ -21,4 +21,4 @@ def smart_password_list_view(request):
         'password_count': password_count,
         'has_passwords': password_count > 0,
     }
-    return render(request, 'smart_passwords/smart_password_manager.html', context)
+    return render(request, 'smart_passwords/smart_password_list.html', context)
