@@ -16,7 +16,7 @@ def api_export_passwords(request):
             "_metadata": {
                 "exported_at": datetime.now().isoformat(),
                 "app_name": "Smart Password Manager (Web)",
-                "app_version": "v2.1.1",
+                "app_version": "v2.1.2",
                 "app_type": "Web",
                 "lib_name": "smartpasslib-js",
                 "lib_version": "v1.0.3",
