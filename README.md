@@ -60,6 +60,7 @@ Passwords generated with older versions **cannot be regenerated** with v2.x.x.
 - **Secure Input**: Hidden secret phrase entry with show/hide toggle
 - **Copy to Clipboard**: One-click password copying
 - **Export/Import**: Backup and restore your password metadata
+- **QR Code Export**: Transfer password metadata to Android app via QR code
 - **User Authentication**: Secure login with Django
 - **PostgreSQL Backend**: Reliable data storage
 
@@ -237,6 +238,47 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 
 **This is the price of true decentralization** — you are completely in control.
 
+---
+
+## QR Code Export to Mobile
+
+The web application allows you to export password metadata to the **Smart Password Manager Android** app via QR code:
+
+**How to use:**
+1. In the password list, click the **QR** button next to any password
+2. A modal dialog with QR code will appear containing the password metadata
+3. Open the Android app and scan the QR code
+4. The password entry will be automatically added to your mobile device
+
+**What's included in QR:**
+- Password length
+- Public verification key
+
+**What's NOT included:**
+- Password description (shown in dialog for reference, but not embedded in QR)
+- Your secret phrase (never leaves your device)
+- The actual password
+- Any sensitive information
+
+**Security Note:** QR codes contain only metadata that is already stored on the server. Your secret phrase and actual passwords are never embedded in QR codes.
+
+---
+
+## Cross-Platform Data Transfer
+
+Smart Password Manager Web supports seamless metadata transfer across all platforms:
+
+**Methods:**
+- **QR codes** - Transfer password metadata from Web to Android app instantly
+- **Export/Import** - JSON export/import works across all platforms (Web, Desktop, CLI, Android)
+
+**Cross-platform compatibility:**
+- Same JSON format for export/import on all platforms
+- QR code format is identical across Web and Desktop versions
+- Metadata sync without cloud dependency
+
+---
+
 ## Interface Preview
 
 ![Web Interface](https://github.com/smartlegionlab/smart-password-manager-web/raw/master/data/images/smart_password_manager.png)
@@ -262,6 +304,8 @@ Smart Password Manager Web produces **identical passwords** to:
 | Go         | [smartpasslib-go](https://github.com/smartlegionlab/smartpasslib-go)                                                      |
 | Kotlin     | [smartpasslib-kotlin](https://github.com/smartlegionlab/smartpasslib-kotlin)                                              |
 | C#         | [smartpasslib-csharp](https://github.com/smartlegionlab/smartpasslib-csharp)                                              |
+
+**Data transfer:** Use QR codes or Export/Import to sync metadata across all platforms.
 
 ## Ecosystem
 
