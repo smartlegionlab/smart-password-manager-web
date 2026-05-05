@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
-from django.core.validators import MinValueValidator
+
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class SmartPassword(models.Model):
@@ -12,9 +13,13 @@ class SmartPassword(models.Model):
         null=True
     )
     description = models.CharField(max_length=255)
+
     length = models.PositiveSmallIntegerField(
         default=16,
-        validators=[MinValueValidator(12)]
+        validators=[
+            MinValueValidator(12, message="Password length must be at least 12 characters"),
+            MaxValueValidator(100, message="Password length cannot exceed 100 characters")
+        ]
     )
     public_key = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

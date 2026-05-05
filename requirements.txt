@@ -1,11 +1,15 @@
 asgiref==3.9.1
+bcrypt==5.0.0
 Django==5.2.5
 django-debug-toolbar==6.0.0
+django-otp==1.7.0
 django-redis==6.0.0
 pillow==11.3.0
+psutil==6.1.1
 psycopg2-binary==2.9.10
+pyotp==2.9.0
 python-dotenv==1.1.1
+qrcode==8.2
 redis==6.4.0
 smartpasslib==3.0.0
 sqlparse==0.5.3
-psutil==6.1.1

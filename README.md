@@ -1,4 +1,4 @@
-# Smart Password Manager Web <sup>v2.1.3</sup>
+# Smart Password Manager Web <sup>v4.0.0</sup>
 
 ---
 
@@ -30,11 +30,19 @@ page and sync metadata; all cryptographic operations happen locally in your brow
 
 ---
 
-## 🔄 Breaking Change (v2.x.x)
+## 🔄 Breaking Change (v4.0.0)
 
-> **⚠️ This version is NOT backward compatible with v1.x.x**
+> **⚠️ This version uses [smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js) v4.0.0, which is NOT backward compatible with v1.x.x or v2.x.x**
 
-Passwords generated with older versions **cannot be regenerated** with v2.x.x.
+Smart passwords created with older versions **cannot be regenerated** using v4.0.0.
+
+**What changed:**
+- Dynamic iterations: private key 15-30 steps (was fixed 30), public key 45-60 steps (was fixed 60)
+- Expanded Google-compatible character set (26 special chars + A-Z + a-z + 0-9)
+- Secret phrases now require minimum 12 characters (was 4)
+- Password length now limited to 100 characters (was 1000)
+- Key derivation with salt separation ("private"/"public")
+- No secret exposure in iteration logs
 
 📖 **Full migration instructions** → see [MIGRATION.md](https://github.com/smartlegionlab/smart-password-manager-web/blob/master/MIGRATION.md)
 
@@ -56,6 +64,7 @@ Passwords generated with older versions **cannot be regenerated** with v2.x.x.
 - **Client-Side Processing**: Secret phrase never leaves your browser
 - **Cross-Platform Compatible**: Same passwords as desktop, CLI, and mobile apps
 - **Public Key Verification**: Verify secret knowledge without exposure
+- **Dynamic Iteration Counts**: 15-30 for private key, 45-60 for public key (deterministic per secret)
 - **Web-Based Interface**: Access from any device with a browser
 - **Secure Input**: Hidden secret phrase entry with show/hide toggle
 - **Copy to Clipboard**: One-click password copying
@@ -86,19 +95,28 @@ Passwords generated with older versions **cannot be regenerated** with v2.x.x.
 
 Powered by **[smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js)** — JavaScript implementation of deterministic password generation.
 
-**Key derivation (same as Python/Go/Kotlin/C# versions):**
+**Key derivation (same as Python/Go/Kotlin/C# versions v4.0.0):**
 
-| Key Type    | Iterations | Purpose                                               |
-|-------------|------------|-------------------------------------------------------|
-| Private Key | 30         | Password generation (never stored, never transmitted) |
-| Public Key  | 60         | Verification (stored on server)                       |
+| Key Type    | Iterations              | Purpose                                               |
+|-------------|-------------------------|-------------------------------------------------------|
+| Private Key | 15-30 (dynamic)         | Password generation (never stored, never transmitted) |
+| Public Key  | 45-60 (dynamic)         | Verification (stored on server)                       |
 
-**Character Set:** `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$&*-_`
+**Character Set (Google-compatible):**
+```
+!@#$%^&*()_+-=[]{};:,.<>?/ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz
+```
+
+**Validation Rules:**
+- Secret phrase: minimum 12 characters
+- Password length: 12-100 characters
 
 **Decentralized Architecture**:
 - No central authority required
 - Metadata can be synced via any channel
 - Your security depends only on your secret phrase
+
+---
 
 ## Quick Start
 
@@ -208,9 +226,13 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 ### Secret Phrase
 - **Minimum 12 characters** (enforced)
 - Case-sensitive
-- Use mix of: uppercase, lowercase, numbers, symbols, emoji, or Cyrillic
+- Use mix of: uppercase, lowercase, numbers, symbols
 - Never store digitally
 - **NEVER use your password description as secret phrase**
+
+### Password Length Requirements
+- **Smart/Strong/Base passwords**: 12-100 characters
+- **Authentication codes**: 4-100 characters (if using code generator)
 
 ### Strong Secret Examples
 ```
@@ -221,11 +243,10 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 
 ### Weak Secret Examples (avoid)
 ```
+❌ "short"                       — too short, rejected
 ❌ "GitHub Account"              — using description as secret (weak!)
 ❌ "password"                    — dictionary word, too short
 ❌ "1234567890"                  — only digits, too short
-❌ "qwerty123"                   — keyboard pattern
-❌ Same as description           — never use the same value as password description
 ```
 
 ### Decentralized Nature
@@ -289,7 +310,7 @@ Smart Password Manager Web supports seamless metadata transfer across all platfo
 - **Backend**: Django 5.2+ (only for auth, metadata storage, and session management)
 - **Database**: PostgreSQL
 - **Frontend**: HTML5, CSS3, JavaScript
-- **Client Crypto**: smartpasslib-js (Web Crypto API)
+- **Client Crypto**: smartpasslib-js v4.0.0 (Web Crypto API)
 
 ## Cross-Platform Compatibility
 
@@ -332,10 +353,11 @@ Smart Password Manager Web produces **identical passwords** to:
 
 ## Version History
 
-| Version          | Generation  | Status                   | Migration Required     |
-|------------------|-------------|--------------------------|------------------------|
-| v1.3.7 and below | Server-side | ❌ Deprecated/Unsupported | Must migrate to v2.x.x |
-| v2.x.x+          | Client-side | ✅ Current                | N/A                    |
+| Version          | Generation      | smartpasslib | Status                   | Migration Required     |
+|------------------|-----------------|--------------|--------------------------|------------------------|
+| v1.x.x and below | Server-side     | v1.x.x       | ❌ Deprecated/Unsupported | Must migrate to v4.x.x |
+| v2.x.x           | Client-side     | v1.x.x       | ❌ Deprecated/Unsupported | Must migrate to v4.x.x |
+| **v4.0.0+**      | **Client-side** | **v4.0.0**   | ✅ Current                | N/A                    |
 
 ## License
 
@@ -353,4 +375,6 @@ Copyright (©) 2026, [Alexander Suvorov](https://github.com/smartlegionlab)
 
 - **Issues**: [GitHub Issues](https://github.com/smartlegionlab/smart-password-manager-web/issues)
 - **Documentation**: This [README](https://github.com/smartlegionlab/smart-password-manager-web/blob/master/README.md)
+
+---
 
