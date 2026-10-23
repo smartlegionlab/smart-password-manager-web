@@ -1,10 +1,10 @@
 /**
- * SmartPassLib v4.0.0 - Client-side smart password generator
+ * SmartPassLib v4.0.1 - Client-side smart password generator
  * Cross-platform deterministic password generation
  * Same secret + same length = same password across all platforms
  * Decentralized by design - no central servers, no cloud dependency, no third-party trust required
  *
- * Compatible with smartpasslib Python/Go/Kotlin/C# implementations
+ * Compatible with smartpasslib Python/Go/Kotlin/C#/Rust implementations
  *
  * Key derivation:
  * - Private key: 15-30 iterations (dynamic, deterministic per secret)
@@ -26,10 +26,14 @@
  *   - Core library (Kotlin): https://github.com/smartlegionlab/smartpasslib-kotlin
  *   - Core library (Go): https://github.com/smartlegionlab/smartpasslib-go
  *   - Core library (C#): https://github.com/smartlegionlab/smartpasslib-csharp
+ *   - Core library (Rust): https://github.com/smartlegionlab/smartpasslib-rs
  *   - Desktop Python: https://github.com/smartlegionlab/smart-password-manager-desktop
  *   - Desktop C#: https://github.com/smartlegionlab/SmartPasswordManagerCsharpDesktop
+ *   - Desktop Rust (GUI): https://github.com/smartlegionlab/smart-password-manager-gui-rs
+ *   - Desktop Rust (TUI): https://github.com/smartlegionlab/smart-password-manager-tui-rs
  *   - CLI Manager Python: https://github.com/smartlegionlab/clipassman
  *   - CLI Manager C#: https://github.com/smartlegionlab/SmartPasswordManagerCsharpCli
+ *   - CLI Manager Rust: https://github.com/smartlegionlab/smart-password-manager-cli-rs
  *   - CLI Generator Python: https://github.com/smartlegionlab/clipassgen
  *   - CLI Generator C#: https://github.com/smartlegionlab/SmartPasswordGeneratorCsharpCli
  *   - Web: https://github.com/smartlegionlab/smart-password-manager-web
@@ -46,7 +50,7 @@ const SmartPassLib = (function() {
     // Character set for password generation (Google-compatible)
     // Must match exactly with Python version: symbols + uppercase + digits + lowercase
     const CHARS = "!@#$%^&*()_+-=[]{};:,.<>?/ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
-    const VERSION = '4.0.0';
+    const VERSION = '4.0.1';
 
     function validateSecret(secret) {
         if (!secret || secret.length < 12) {
