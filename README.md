@@ -5,9 +5,9 @@
 **Web-based smart password manager with deterministic password generation. Generate, manage, and retrieve passwords without storing them. Your secret phrase never leaves your browser.**
 
 **Decentralized by Design**: Unlike traditional password managers that store encrypted vaults on central servers, 
-smartpasslib stores nothing. Your secrets never leave your device. Passwords are regenerated on-demand — 
+smartpasslib stores nothing. Your secrets never leave your device. Passwords are regenerated on-demand - 
 **no cloud, no database, no trust required**. The server stores only metadata (description, length, public key) 
-for verification — never your secret phrase or actual password. Internet connection is only needed to load the 
+for verification - never your secret phrase or actual password. Internet connection is only needed to load the 
 page and sync metadata; all cryptographic operations happen locally in your browser.
 
 ---
@@ -27,24 +27,6 @@ page and sync metadata; all cryptographic operations happen locally in your brow
 **Summary:** Software provided "AS IS" without warranty. You assume all risks.
 
 **Full legal disclaimer:** See [DISCLAIMER.md](https://github.com/smartlegionlab/smart-password-manager-web/blob/master/DISCLAIMER.md)
-
----
-
-## 🔄 Breaking Change (v4.0.0)
-
-> **⚠️ This version uses [smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js) v4.0.0, which is NOT backward compatible with v1.x.x or v2.x.x**
-
-Smart passwords created with older versions **cannot be regenerated** using v4.0.0.
-
-**What changed:**
-- Dynamic iterations: private key 15-30 steps (was fixed 30), public key 45-60 steps (was fixed 60)
-- Expanded Google-compatible character set (26 special chars + A-Z + a-z + 0-9)
-- Secret phrases now require minimum 12 characters (was 4)
-- Password length now limited to 100 characters (was 1000)
-- Key derivation with salt separation ("private"/"public")
-- No secret exposure in iteration logs
-
-📖 **Full migration instructions** → see [MIGRATION.md](https://github.com/smartlegionlab/smart-password-manager-web/blob/master/MIGRATION.md)
 
 ---
 
@@ -76,7 +58,7 @@ Smart passwords created with older versions **cannot be regenerated** using v4.0
 ## Security Model
 
 - **Proof of Knowledge**: Public keys verify secrets without exposing them
-- **Decentralized Trust**: No third party needed — you control your secrets completely
+- **Decentralized Trust**: No third party needed - you control your secrets completely
 - **Deterministic Security**: Same secret + length = same password, always
 - **Metadata Separation**: Non-sensitive data stored on server
 - **Local Processing**: Secret and password never leave your browser
@@ -93,9 +75,9 @@ Smart passwords created with older versions **cannot be regenerated** using v4.0
 
 ## Technical Foundation
 
-Powered by **[smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js)** — JavaScript implementation of deterministic password generation.
+Powered by **[smartpasslib-js](https://github.com/smartlegionlab/smartpasslib-js)** - JavaScript implementation of deterministic password generation.
 
-**Key derivation (same as Python/Go/Kotlin/C# versions v4.0.0):**
+**Key derivation (same as Python/Go/Kotlin/C#/Rust versions v4.0.0):**
 
 | Key Type    | Iterations              | Purpose                                               |
 |-------------|-------------------------|-------------------------------------------------------|
@@ -236,17 +218,17 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 
 ### Strong Secret Examples
 ```
-✅ "MyStrongSecretPhrase2026!"   — mixed case + numbers + symbols
-✅ "P@ssw0rd!LongSecret"         — special chars + numbers + length
-✅ "КотБегемот2026НаДиете"       — Cyrillic + numbers
+"MyStrongSecretPhrase2026!"   - mixed case + numbers + symbols
+"P@ssw0rd!LongSecret"         - special chars + numbers + length
+"КотБегемот2026НаДиете"       - Cyrillic + numbers
 ```
 
 ### Weak Secret Examples (avoid)
 ```
-❌ "short"                       — too short, rejected
-❌ "GitHub Account"              — using description as secret (weak!)
-❌ "password"                    — dictionary word, too short
-❌ "1234567890"                  — only digits, too short
+"short"                       - too short, rejected
+"GitHub Account"              - using description as secret (weak!)
+"password"                    - dictionary word, too short
+"1234567890"                  - only digits, too short
 ```
 
 ### Decentralized Nature
@@ -257,7 +239,7 @@ Admin interface: [http://localhost:8000/admin](http://localhost:8000/admin)
 - No support team can recover your access
 - Your secret phrase is the ONLY key
 
-**This is the price of true decentralization** — you are completely in control.
+**This is the price of true decentralization** - you are completely in control.
 
 ---
 
@@ -321,10 +303,14 @@ Smart Password Manager Web produces **identical passwords** to:
 | Desktop    | [Desktop Manager](https://github.com/smartlegionlab/smart-password-manager-desktop)                                       |
 | CLI        | [CLI PassMan](https://github.com/smartlegionlab/clipassman) / [CLI PassGen](https://github.com/smartlegionlab/clipassgen) |
 | Android    | [Android Manager](https://github.com/smartlegionlab/smart-password-manager-android)                                       |
+| Rust CLI   | [CLI Manager (Rust)](https://github.com/smartlegionlab/smart-password-manager-cli-rs)                                     |
+| Rust GUI   | [Desktop Manager (Rust, GUI)](https://github.com/smartlegionlab/smart-password-manager-gui-rs)                            |
+| Rust TUI   | [Desktop Manager (Rust, TUI)](https://github.com/smartlegionlab/smart-password-manager-tui-rs)                            |
 | Python     | [smartpasslib](https://github.com/smartlegionlab/smartpasslib)                                                            |
 | Go         | [smartpasslib-go](https://github.com/smartlegionlab/smartpasslib-go)                                                      |
 | Kotlin     | [smartpasslib-kotlin](https://github.com/smartlegionlab/smartpasslib-kotlin)                                              |
 | C#         | [smartpasslib-csharp](https://github.com/smartlegionlab/smartpasslib-csharp)                                              |
+| Rust       | [smartpasslib-rs](https://github.com/smartlegionlab/smartpasslib-rs)                                                      |
 
 **Data transfer:** Use QR codes or Export/Import to sync metadata across all platforms.
 
@@ -336,28 +322,24 @@ Smart Password Manager Web produces **identical passwords** to:
 - **[smartpasslib-kotlin](https://github.com/smartlegionlab/smartpasslib-kotlin)** - Kotlin
 - **[smartpasslib-go](https://github.com/smartlegionlab/smartpasslib-go)** - Go
 - **[smartpasslib-csharp](https://github.com/smartlegionlab/smartpasslib-csharp)** - C#
+- **[smartpasslib-rs](https://github.com/smartlegionlab/smartpasslib-rs)** - Rust
 
 **CLI Applications:**
 - **[CLI Smart Password Manager (Python)](https://github.com/smartlegionlab/clipassman)**
 - **[CLI Smart Password Generator (Python)](https://github.com/smartlegionlab/clipassgen)**
 - **[CLI Smart Password Manager (C#)](https://github.com/smartlegionlab/SmartPasswordManagerCsharpCli)**
-- **[CLI Smart Password Generator (C#)](https://github.com/smartlegionlab/SmartPasswordGeneratorCsharpCli)** 
+- **[CLI Smart Password Generator (C#)](https://github.com/smartlegionlab/SmartPasswordGeneratorCsharpCli)**
+- **[CLI Smart Password Manager (Rust)](https://github.com/smartlegionlab/smart-password-manager-cli-rs)**
 
 **Desktop Applications:**
 - **[Desktop Smart Password Manager (Python)](https://github.com/smartlegionlab/smart-password-manager-desktop)**
 - **[Desktop Smart Password Manager (C#)](https://github.com/smartlegionlab/SmartPasswordManagerCsharpDesktop)**
+- **[Desktop Smart Password Manager (Rust, GUI)](https://github.com/smartlegionlab/smart-password-manager-gui-rs)**
+- **[Desktop Smart Password Manager (Rust, TUI)](https://github.com/smartlegionlab/smart-password-manager-tui-rs)**
 
 **Other:**
 - **[Web Smart Password Manager](https://github.com/smartlegionlab/smart-password-manager-web)** (this)
 - **[Android Smart Password Manager](https://github.com/smartlegionlab/smart-password-manager-android)**
-
-## Version History
-
-| Version          | Generation      | smartpasslib | Status                   | Migration Required     |
-|------------------|-----------------|--------------|--------------------------|------------------------|
-| v1.x.x and below | Server-side     | v1.x.x       | ❌ Deprecated/Unsupported | Must migrate to v4.x.x |
-| v2.x.x           | Client-side     | v1.x.x       | ❌ Deprecated/Unsupported | Must migrate to v4.x.x |
-| **v4.0.0+**      | **Client-side** | **v4.0.0**   | ✅ Current                | N/A                    |
 
 ## License
 
